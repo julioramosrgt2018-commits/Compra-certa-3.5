@@ -13,7 +13,7 @@
     <!-- OCR Tesseract.js em Português para Leitura de Cupons -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     
-    <!-- Registo do Service Worker exigido pelo Chrome para desbloquear a instalação PWA -->
+    <!-- Registo obrigatório do Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -53,7 +53,6 @@
             gap: 10px;
         }
         
-        /* Imagem da sacolinha oficial visível no cabeçalho */
         .header-icon {
             width: 32px;
             height: 32px;
@@ -71,7 +70,7 @@
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .card h3 { margin-bottom: 10px; font-size: 1rem; color: var(--accent); }
         
-        input, select, button { width: 100%; padding: 12px; margin-top: 8px; margin-bottom: 12px; background: #2a2a2a; border: 1px solid var(--border); color: #fff; border-radius: 6px; font-size: 1rem; }
+        input, select, textarea, button { width: 100%; padding: 12px; margin-top: 8px; margin-bottom: 12px; background: #2a2a2a; border: 1px solid var(--border); color: #fff; border-radius: 6px; font-size: 1rem; }
         button { background: var(--primary); color: #fff; font-weight: bold; border: none; cursor: pointer; transition: background 0.2s; }
         button:hover { background: var(--primary-hover); }
         button.danger { background: var(--danger); }
@@ -117,12 +116,9 @@
 
             <div class="card">
                 <h3>📝 Registrar Item no Carrinho</h3>
-                <label>Supermercado:</label>
-                <select id="supermercadoInput">
-                    <option value="Supermercado A">Supermercado A</option>
-                    <option value="Supermercado B">Supermercado B</option>
-                    <option value="Supermercado C">Supermercado C</option>
-                </select>
+                <label>Nome do Supermercado / Estabelecimento:</label>
+                <!-- Alterado para campo de texto livre para digitar o nome real do local -->
+                <input type="text" id="supermercadoInput" placeholder="Ex: Supermercado São José">
 
                 <label>Produto / Especificação:</label>
                 <input type="text" id="produtoInput" placeholder="Ex: Leite Integral 1L">
@@ -243,7 +239,7 @@
         }
 
         function adicionarItem() {
-            let mercado = document.getElementById('supermercadoInput').value;
+            let mercado = document.getElementById('supermercadoInput').value.trim() || 'Supermercado Geral';
             let produto = document.getElementById('produtoInput').value.trim();
             let qtd = parseInt(document.getElementById('qtdInput').value) || 1;
             let preco = parseFloat(document.getElementById('precoInput').value) || 0;

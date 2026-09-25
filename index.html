@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compra Certa</title>
-    <!-- Ligação correta com o PWA Manifest para permitir instalação e ícone da sacolinha -->
+    <!-- Ligação correta com o PWA Manifest -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#006644">
     
@@ -13,7 +13,7 @@
     <!-- OCR Tesseract.js em Português para Leitura de Cupons -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     
-    <!-- Registo obrigatório do Service Worker para desbloquear a instalação PWA no telemóvel -->
+    <!-- Registo do Service Worker exigido pelo Chrome para desbloquear a instalação PWA -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -53,7 +53,7 @@
             gap: 10px;
         }
         
-        /* Estilo da imagem da sacolinha no cabeçalho/botão */
+        /* Imagem da sacolinha oficial visível no cabeçalho */
         .header-icon {
             width: 32px;
             height: 32px;
@@ -92,7 +92,6 @@
 <body>
 
     <header>
-        <!-- Imagem da sacolinha integrada no topo do aplicativo -->
         <img src="https://cdn-icons-png.flaticon.com/512/3081/3081986.png" alt="Sacolinha" class="header-icon">
         Compra Certa
     </header>
@@ -211,11 +210,11 @@
             </div>
         </div>
 
-        <!-- ABA PREÇOS (COMPARADOR) -->
+        <!-- ABA PREÇOS -->
         <div id="precos" class="tab-content">
             <div class="card">
                 <h3>📊 Comparador de Preços por Supermercado</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">O app compara automaticamente onde os produtos saem mais barato com base no histórico de compras.</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">O app compara automaticamente onde os produtos saem mais barato.</p>
                 <div id="comparadorContainer"></div>
             </div>
         </div>
@@ -223,7 +222,6 @@
     </div>
 
     <script>
-        // Sistema de Abas
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
@@ -232,7 +230,6 @@
             if(tabId === 'precos') carregarComparador();
         }
 
-        // Dados Locais (LocalStorage)
         let carrinho = JSON.parse(localStorage.getItem('cc_carrinho')) || [];
         let listaPlanejada = JSON.parse(localStorage.getItem('cc_lista')) || [];
         let validades = JSON.parse(localStorage.getItem('cc_validades')) || [];
@@ -245,7 +242,6 @@
             localStorage.setItem('cc_beneficios', JSON.stringify(beneficios));
         }
 
-        // Carrinho & Comparador de Preços
         function adicionarItem() {
             let mercado = document.getElementById('supermercadoInput').value;
             let produto = document.getElementById('produtoInput').value.trim();
@@ -300,7 +296,6 @@
             }
         }
 
-        // Benefícios
         function salvarSaldoBeneficio() {
             let tipo = document.getElementById('tipoBeneficio').value;
             let valor = parseFloat(document.getElementById('saldoBeneficioInput').value) || 0;
@@ -316,7 +311,6 @@
             document.getElementById('displayRefeicao').innerText = `R$ ${(beneficios.Refeicao || 0).toFixed(2)}`;
         }
 
-        // Lista Planejada
         function adicionarNaLista() {
             let item = document.getElementById('novoItemLista').value.trim();
             if(!item) return;
@@ -343,7 +337,6 @@
             renderLista();
         }
 
-        // Validade
         function adicionarValidade() {
             let produto = document.getElementById('produtoValidade').value.trim();
             let data = document.getElementById('dataValidadeInput').value;
@@ -363,7 +356,6 @@
             });
         }
 
-        // OCR Tesseract
         function lerCupom(event) {
             let file = event.target.files[0];
             if(!file) return;
@@ -382,7 +374,6 @@
             });
         }
 
-        // Leitor de Código de Barras (Html5Qrcode)
         let html5QrCode;
         function startScanner() {
             let readerDiv = document.getElementById('reader');
@@ -412,7 +403,6 @@
             });
         }
 
-        // Comparador de Preços Inteligente
         function carregarComparador() {
             let container = document.getElementById('comparadorContainer');
             if(carrinho.length === 0) {

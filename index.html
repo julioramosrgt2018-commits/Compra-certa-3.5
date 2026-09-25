@@ -1,1039 +1,409 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compra Certa - Completo</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<!-- Biblioteca Html5Qrcode -->
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-<!-- OCR Tesseract.js em Português para Leitura de Cupons -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<style>
-:root {
---bg-color: #121212;
---card-bg: #1e1e1e;
---primary: #00875a;
---primary-hover: #006644;
---text: #ffffff;
---text-sub: #aaaaaa;
---danger: #de350b;
---border: #333333;
---accent: #ffab00;
-}
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-background-color: var(--bg-color);
-color: var(--text);
-margin: 0;
-padding: 0;
-padding-bottom: 30px;
-}
-header {
-background-color: var(--card-bg);
-padding: 15px;
-text-align: center;
-border-bottom: 1px solid var(--border);
-}
-header h1 {
-margin: 0;
-font-size: 1.3rem;
-color: var(--primary);
-}
-nav {
-display: flex;
-background-color: var(--card-bg);
-border-bottom: 1px solid var(--border);
-position: sticky;
-top: 0;
-z-index: 100;
-overflow-x: auto;
-}
-.tab-btn {
-flex: 1;
-min-width: 75px;
-padding: 12px 2px;
-background: none;
-border: none;
-color: var(--text-sub);
-font-weight: bold;
-font-size: 0.75rem;
-cursor: pointer;
-border-bottom: 3px solid transparent;
-text-align: center;
-white-space: nowrap;
-}
-.tab-btn.active {
-color: var(--primary);
-border-bottom-color: var(--primary);
-}
-main {
-padding: 15px;
-max-width: 600px;
-margin: 0 auto;
-}
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.card {
-background-color: var(--card-bg);
-border-radius: 8px;
-padding: 15px;
-margin-bottom: 15px;
-border: 1px solid var(--border);
-}
-.card h2 {
-font-size: 1rem;
-margin-top: 0;
-margin-bottom: 10px;
-color: var(--text);
-display: flex;
-align-items: center;
-gap: 8px;
-}
-input[type="text"], input[type="number"], input[type="date"], select {
-width: 100%;
-padding: 10px;
-margin: 6px 0 12px 0;
-border-radius: 4px;
-border: 1px solid var(--border);
-background-color: #2a2a2a;
-color: #fff;
-box-sizing: border-box;
-font-size: 0.95rem;
-}
-.btn {
-background-color: var(--primary);
-color: white;
-border: none;
-padding: 12px 15px;
-border-radius: 4px;
-font-weight: bold;
-cursor: pointer;
-width: 100%;
-margin-top: 5px;
-box-sizing: border-box;
-font-size: 0.9rem;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-}
-.btn:active { background-color: var(--primary-hover); }
-.btn-secondary { background-color: #333333; color: #fff; }
-.btn-danger { background-color: var(--danger); }
-.btn-accent { background-color: var(--accent); color: #000; }
-#reader-container, #photo-preview-container {
-width: 100%;
-border-radius: 8px;
-overflow: hidden;
-margin-top: 10px;
-display: none;
-}
-#photo-video {
-width: 100%;
-height: 250px;
-object-fit: cover;
-border-radius: 8px;
-background: #000;
-}
-.status-msg {
-font-size: 0.85rem;
-color: #57d9a3;
-font-weight: bold;
-margin-top: 8px;
-word-break: break-word;
-}
-.item-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10px 0;
-border-bottom: 1px solid var(--border);
-}
-.item-actions {
-display: flex;
-gap: 8px;
-align-items: center;
-}
-.action-btn {
-background: none;
-border: none;
-cursor: pointer;
-font-size: 1rem;
-}
-.total-box {
-font-size: 1.2rem;
-font-weight: bold;
-text-align: right;
-padding: 10px 0;
-color: var(--primary);
-}
-.badge {
-padding: 3px 8px;
-border-radius: 4px;
-font-size: 0.75rem;
-font-weight: bold;
-}
-.badge-danger { background-color: var(--danger); color: #fff; }
-.badge-warning { background-color: var(--accent); color: #000; }
-.badge-success { background-color: var(--primary); color: #fff; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra Certa - Completo</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <!-- Biblioteca Html5Qrcode para Leitura de Código de Barras -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- OCR Tesseract.js em Português para Leitura de Cupons -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #006644;
+            --primary-hover: #004d33;
+            --accent: #f59e0b;
+            --text-main: #e0e0e0;
+            --text-muted: #9ca3af;
+            --danger: #dc2626;
+            --border: #333333;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 70px; }
+        header { background-color: var(--primary); padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        
+        .nav-tabs { display: flex; overflow-x: auto; background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 5px; gap: 5px; position: sticky; top: 0; z-index: 100; }
+        .nav-tab { background: transparent; border: none; color: var(--text-muted); padding: 10px 15px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; border-radius: 4px; transition: 0.2s; }
+        .nav-tab.active { background: var(--primary); color: #fff; font-weight: bold; }
+        
+        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .card h3 { margin-bottom: 10px; font-size: 1rem; color: var(--accent); }
+        
+        input, select, button { width: 100%; padding: 12px; margin-top: 8px; margin-bottom: 12px; background: #2a2a2a; border: 1px solid var(--border); color: #fff; border-radius: 6px; font-size: 1rem; }
+        button { background: var(--primary); color: #fff; font-weight: bold; border: none; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: var(--primary-hover); }
+        button.danger { background: var(--danger); }
+        button.danger:hover { background: #b91c1c; }
+        button.secondary { background: #374151; }
+        button.secondary:hover { background: #4b5563; }
+        
+        .flex-row { display: flex; gap: 10px; }
+        .flex-row > * { flex: 1; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-muted); }
+        
+        #reader { width: 100%; max-height: 300px; background: #000; border-radius: 6px; overflow: hidden; margin-bottom: 10px; display: none; }
+    </style>
 </head>
 <body>
 
-<header>
-<h1>🛒 Compra Certa</h1>
-</header>
-
-<nav>
-<button class="tab-btn active" onclick="switchTab('tab-compra', event)">🛒 Compra</button>
-<button class="tab-btn" onclick="switchTab('tab-beneficios', event)">💳 Benefícios</button>
-<button class="tab-btn" onclick="switchTab('tab-lista', event)">📋 Lista</button>
-<button class="tab-btn" onclick="switchTab('tab-validade', event)">📅 Validade</button>
-<button class="tab-btn" onclick="switchTab('tab-cupom', event)">🧾 Cupom</button>
-<button class="tab-btn" onclick="switchTab('tab-divergencia', event)">⚖️ Diverg.</button>
-<button class="tab-btn" onclick="switchTab('tab-comparador', event)">📊 Preços</button>
-<button class="tab-btn" onclick="switchTab('tab-historico', event)">📦 Histórico</button>
-</nav>
-
-<main>
-<!-- TAB 1: COMPRA (CARRINHO E LEITOR) -->
-<section id="tab-compra" class="tab-content active">
-<div class="card">
-<h2>📷 Leitura de Código de Barras</h2>
-
-<button class="btn btn-accent" onclick="abrirCapturaFotoTraseira()">
-📷 Capturar Foto do Código (Câmera Traseira)
-</button>
-
-<button class="btn btn-secondary" style="margin-top:8px;" onclick="iniciarLeitorAoVivo()">🎥 Abrir Câmera Traseira ao Vivo</button>
-<button class="btn btn-danger" id="btn-parar-ao-vivo" style="display:none; margin-top:8px;" onclick="pararTudoCamera()">⏹️ Parar Câmera</button>
-
-<div id="photo-preview-container">
-<video id="photo-video" playsinline autoplay></video>
-<button class="btn" style="margin-top:6px;" onclick="tirarFotoEProcessar()">📸 Bater Foto e Ler Código</button>
-</div>
-
-<div id="reader-container">
-<div id="reader"></div>
-</div>
-<p id="barcode-status" class="status-msg"></p>
-</div>
-
-<div class="card">
-<h2>📝 Registrar Item no Carrinho</h2>
-<label style="font-size:0.8rem; color:var(--text-sub);">Especificação / Produto:</label>
-<input type="text" id="prod-nome" placeholder="Ex: Leite Integral 1L">
-
-<div style="display:flex; gap:10px;">
-<div style="flex:1;">
-<label style="font-size:0.8rem; color:var(--text-sub);">Qtd:</label>
-<input type="number" id="prod-qtd" value="1" min="1">
-</div>
-<div style="flex:2;">
-<label style="font-size:0.8rem; color:var(--text-sub);">Preço Unitário (R$`):</label>
-<input type="number" id="prod-preco" placeholder="0.00" step="0.01">
-</div>
-</div>
-
-<button class="btn" onclick="addProdutoCarrinho()">+ Adicionar ao Carrinho</button>
-</div>
-
-<div class="card">
-<h2>🛒 Itens no Carrinho</h2>
-<div id="carrinho-list">
-<p style="color:#888; font-size:0.85rem;">Nenhum item adicionado ao carrinho.</p>
-</div>
-<div class="total-box" id="carrinho-total">Total: R`$ 0,00</div>
-
-<div style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 12px;">
-<label style="font-size:0.85rem; color:var(--text);">Supermercado:</label>
-<input type="text" id="supermercado-nome" placeholder="Ex: Supermercado Bom Preço">
-
-<label style="font-size:0.85rem; color:var(--text);">Forma de Pagamento / Benefício:</label>
-<select id="forma-pagamento">
-<option value="alimentacao">Vale Alimentação</option>
-<option value="refeicao">Vale Refeição</option>
-<option value="outro">Dinheiro / Outros</option>
-</select>
-</div>
-
-<button class="btn" style="background-color: #2b7de9; margin-top: 12px;" onclick="finalizarEGravarCompra()">💾 Finalizar e Gravar Compra</button>
-<button class="btn btn-danger" onclick="limparCarrinho()">🗑️ Limpar Carrinho</button>
-</div>
-</section>
-
-<!-- TAB 2: VALES (ALIMENTAÇÃO E REFEIÇÃO) -->
-<section id="tab-beneficios" class="tab-content">
-<div class="card">
-<h2>💳 Gestão de Saldos dos Benefícios</h2>
-
-<div style="background:#2a2a2a; padding:12px; border-radius:6px; margin-bottom:12px;">
-<strong style="color:var(--primary);">🥗 Vale Alimentação</strong>
-<div style="font-size: 1.3rem; font-weight: bold; margin: 5px 0;" id="saldo-alimentacao-view">R):</label>
-<div style="display:flex; gap:8px;">
-<input type="number" id="input-saldo-alimentacao" placeholder="0.00" step="0.01">
-<button class="btn" style="width:120px; margin-top:6px;" onclick="atualizarSaldo('alimentacao')">Salvar</button>
-</div>
-</div>
-
-<div style="background:#2a2a2a; padding:12px; border-radius:6px;">
-<strong style="color:var(--accent);">🍽️ Vale Refeição</strong>
-<div style="font-size: 1.3rem; font-weight: bold; margin: 5px 0;" id="saldo-refeicao-view">R):</label>
-<div style="display:flex; gap:8px;">
-<input type="number" id="input-saldo-refeicao" placeholder="0.00" step="0.01">
-<button class="btn" style="width:120px; margin-top:6px;" onclick="atualizarSaldo('refeicao')">Salvar</button>
-</div>
-</div>
-</div>
-</section>
-
-<!-- TAB 3: LISTA PLANEJADA -->
-<section id="tab-lista" class="tab-content">
-<div class="card">
-<h2>📋 Adicionar à Lista Planejada</h2>
-<input type="text" id="item-lista-nome" placeholder="Nome do item a comprar...">
-<button class="btn" onclick="adicionarItemLista()">+ Adicionar à Lista</button>
-</div>
-
-<div class="card">
-<h2>📌 Itens Planejados</h2>
-<div id="lista-planejada-container">
-<p style="color:#888; font-size:0.85rem;">Sua lista está vazia.</p>
-</div>
-<button class="btn btn-danger" style="margin-top:10px;" onclick="limparListaPlanejada()">🗑️ Limpar Lista</button>
-</div>
-</section>
-
-<!-- TAB 4: CONTROLE DE VALIDADE -->
-<section id="tab-validade" class="tab-content">
-<div class="card">
-<h2>📅 Cadastrar Validade de Produto</h2>
-<input type="text" id="val-prod-nome" placeholder="Nome do Produto (Ex: Iogurte)">
-<label style="font-size:0.8rem; color:var(--text-sub);">Data de Vencimento:</label>
-<input type="date" id="val-prod-data">
-<button class="btn" onclick="cadastrarValidade()">+ Cadastrar Validade</button>
-</div>
-
-<div class="card">
-<h2>🚨 Controle de Produtos / Prazos</h2>
-<div id="validades-container">
-<p style="color:#888; font-size:0.85rem;">Nenhum produto em controle de validade.</p>
-</div>
-</div>
-</section>
-
-<!-- TAB 5: CUPOM FISCAL -->
-<section id="tab-cupom" class="tab-content">
-<div class="card">
-<h2>🧾 Registrar Cupom Fiscal</h2>
-<p style="font-size:0.85rem; color:var(--text-sub);">Fotografe o cupom para realizar a leitura OCR automática dos itens, quantidades e preços.</p>
-
-<button class="btn" onclick="abrirCapturaCupomTraseira()">📷 Tirar Foto do Cupom (Câmera Traseira)</button>
-<p id="ocr-status" class="status-msg"></p>
-</div>
-
-<div class="card">
-<h2>📸 Cupons Salvos</h2>
-<div id="cupons-container">
-<p style="color:#888; font-size:0.85rem;">Nenhum cupom gravado.</p>
-</div>
-</div>
-</section>
-
-<!-- TAB 6: CONFERÊNCIA DE DIVERGÊNCIAS -->
-<section id="tab-divergencia" class="tab-content">
-<div class="card">
-<h2>⚖️ Comparação: Carrinho x Cupom Fiscal</h2>
-<p style="font-size:0.85rem; color:var(--text-sub);">Cruza os valores e quantidades inseridos por você com a leitura real do cupom fiscal da compra.</p>
-<button class="btn btn-accent" onclick="conferirDivergencias()">🔍 Executar Comparação Rigorosa</button>
-</div>
-
-<div class="card">
-<h2>Relatório de Divergências Encontradas</h2>
-<div id="divergencias-resultado">
-<p style="color:#888; font-size:0.85rem;">Clique no botão acima para iniciar a conferência.</p>
-</div>
-</div>
-</section>
-
-<!-- TAB 7: COMPARADOR DE PREÇOS ENTRE SUPERMERCADOS -->
-<section id="tab-comparador" class="tab-content">
-<div class="card">
-<h2>📊 Onde é Mais Barato Comprar?</h2>
-<p style="font-size:0.85rem; color:var(--text-sub);">O app analisa o histórico de compras em diferentes supermercados e compara onde os mesmos produtos saem mais em conta.</p>
-<button class="btn btn-accent" onclick="gerarComparativoPrecos()">📊 Analisar Histórico e Preços</button>
-</div>
-
-<div class="card">
-<h2>Resultado do Comparativo por Produto</h2>
-<div id="comparativo-resultado">
-<p style="color:#888; font-size:0.85rem;">Clique no botão acima para carregar o comparativo.</p>
-</div>
-</div>
-</section>
-
-<!-- TAB 8: HISTÓRICO DE COMPRAS -->
-<section id="tab-historico" class="tab-content">
-<div class="card">
-<h2>📦 Histórico de Compras Concluídas</h2>
-<div id="historico-container">
-<p style="color:#888; font-size:0.85rem;">Nenhum histórico de compra gravado.</p>
-</div>
-<button class="btn btn-danger" style="margin-top:15px;" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
-</div>
-</section>
-</main>
-
-<script>
-let html5QrCode = null;
-let photoStream = null;
-let lastDetectedCode = "";
-let detectionCount = 0;
-let carrinho = JSON.parse(localStorage.getItem('cc_carrinho')) || [];
-let listaPlanejada = JSON.parse(localStorage.getItem('cc_lista')) || [];
-let cupons = JSON.parse(localStorage.getItem('cc_cupons')) || [];
-let validades = JSON.parse(localStorage.getItem('cc_validades')) || [];
-let historicoCompras = JSON.parse(localStorage.getItem('cc_historico')) || [];
-let itensCupomLidos = JSON.parse(localStorage.getItem('cc_cupom_ocr')) || [];
-
-let saldos = JSON.parse(localStorage.getItem('cc_saldos')) || { alimentacao: 0, refeicao: 0 };
-
-document.addEventListener("DOMContentLoaded", () => {
-renderCarrinho();
-renderListaPlanejada();
-renderCupons();
-renderValidades();
-renderHistorico();
-renderSaldos();
-});
-
-function switchTab(tabId, evt) {
-document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-document.getElementById(tabId).classList.add('active');
-if(evt) evt.currentTarget.classList.add('active');
-if(tabId !== 'tab-compra') pararTudoCamera();
-}
-
-// --- GESTÃO DE BENEFÍCIOS (VALES) ---
-function atualizarSaldo(tipo) {
-const inputVal = parseFloat(document.getElementById(input-saldo-${tipo}).value); if (isNaN(inputVal) || inputVal &lt; 0) { alert("Insira um valor válido para o saldo!"); return; } saldos[tipo] = inputVal; localStorage.setItem('cc_saldos', JSON.stringify(saldos)); document.getElementById(input-saldo-${tipo}).value = '';
-renderSaldos();
-alert(✅ Saldo do Vale ${tipo === 'alimentacao' ? 'Alimentação' : 'Refeição'} atualizado com sucesso!`);
-}
-
-function renderSaldos() {
-document.getElementById('saldo-alimentacao-view').innerText = R$  ${saldos.refeicao.toFixed(2)};
-}
-
-// --- BUSCA DE PRODUTOS ---
-async function buscarProdutoPorCodigo(codigo) {
-const statusEl = document.getElementById('barcode-status');
-statusEl.innerText = 🔍 Código EAN:${codigo} — Consultando bases públicas...`;
-
-try {
-let res = await fetch(https://br.openfoodfacts.org/api/v2/product/${codigo}.json`);
-let data = await res.json();
-
-if (data.status === 1 && data.product) {
-const p = data.product;
-const nome = p.product_name_pt || p.product_name || p.abbreviated_product_name || "";
-const marca = p.brands ? -${p.brands}: ""; const qtd = p.quantity ? (${p.quantity}) : "";
-
-if (nome.trim() !== "") {
-const descricao = ``${nome}{qtd}.trim(); document.getElementById('prod-nome').value = descricao; statusEl.innerText =✅ Encontrado: ${descricao};
-return;
-}
-}
-
-res = await fetch(https://world.openfoodfacts.org/api/v0/product/${codigo}.json`);
-data = await res.json();
-
-if (data.status === 1 && data.product && data.product.product_name) {
-const descricao = data.product.product_name;
-document.getElementById('prod-nome').value = descricao;
-statusEl.innerText = ✅ Encontrado: ${descricao}`;
-return;
-}
-
-document.getElementById('prod-nome').value = "";
-statusEl.innerText = ⚠️ Código${codigo} lido, mas produto sem cadastro na base pública. Insira o nome manualmente.`;
-
-} catch (err) {
-console.error(err);
-document.getElementById('prod-nome').value = "";
-statusEl.innerText = ⚠️ Código ${codigo} lido com sucesso! Insira a descrição manualmente.`;
-}
-}
-
-// --- CAPTURA DE FOTO TRASEIRA PARA CÓDIGO ---
-async function abrirCapturaFotoTraseira() {
-pararTudoCamera();
-const container = document.getElementById('photo-preview-container');
-const video = document.getElementById('photo-video');
-const btnParar = document.getElementById('btn-parar-ao-vivo');
-const statusEl = document.getElementById('barcode-status');
-
-container.style.display = 'block';
-btnParar.style.display = 'block';
-statusEl.innerText = "Câmera traseira aberta. Enquadre o código e toque no botão abaixo.";
-
-try {
-photoStream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: { exact: "environment" } }
-});
-} catch (e) {
-try {
-photoStream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: "environment" }
-});
-} catch (err) {
-alert("Não foi possível acessar a câmera traseira: " + err);
-pararTudoCamera();
-return;
-}
-}
-
-video.srcObject = photoStream;
-}
-
-function tirarFotoEProcessar() {
-const video = document.getElementById('photo-video');
-const statusEl = document.getElementById('barcode-status');
-
-const canvas = document.createElement('canvas');
-canvas.width = video.videoWidth || 640;
-canvas.height = video.videoHeight || 480;
-const ctx = canvas.getContext('2d');
-ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-pararTudoCamera();
-statusEl.innerText = "⏳ Processando foto do código de barras...";
-
-if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-
-canvas.toBlob((blob) => {
-const file = new File([blob], "code_photo.jpg", { type: "image/jpeg" });
-html5QrCode.scanFile(file, true)
-.then(decodedText => {
-statusEl.innerText = ✅ Código Lido:${decodedText}`;
-buscarProdutoPorCodigo(decodedText);
-})
-.catch(err => {
-statusEl.innerText = "❌ Não foi possível ler o código na foto. Garanta boa iluminação e foco.";
-});
-}, 'image/jpeg');
-}
-
-// --- LEITOR CÂMARA AO VIVO ---
-async function iniciarLeitorAoVivo() {
-pararTudoCamera();
-document.getElementById('reader-container').style.display = 'block';
-document.getElementById('btn-parar-ao-vivo').style.display = 'block';
-const statusEl = document.getElementById('barcode-status');
-statusEl.innerText = "Aponte a câmera traseira para o código de barras...";
-
-lastDetectedCode = "";
-detectionCount = 0;
-
-if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-
-const config = {
-fps: 15,
-qrbox: { width: 250, height: 150 },
-aspectRatio: 1.0,
-formatsToSupport: [
-Html5QrcodeSupportedFormats.EAN_13,
-Html5QrcodeSupportedFormats.EAN_8,
-Html5QrcodeSupportedFormats.UPC_A
- ]
-};
-
-const onScanSuccess = (decodedText) => {
-if (decodedText === lastDetectedCode) {
-detectionCount++;
-} else {
-lastDetectedCode = decodedText;
-detectionCount = 1;
-}
-
-if (detectionCount >= 3) {
-pararTudoCamera();
-buscarProdutoPorCodigo(decodedText);
-} else {
-statusEl.innerText = ⏳ Confirmando código: ${decodedText}...`;
-}
-};
-
-try {
-await html5QrCode.start({ facingMode: { exact: "environment" } }, config, onScanSuccess, (err) => {});
-} catch (err) {
-html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, (err) => {})
-.catch(e => {
-alert("Erro ao abrir a câmera traseira: " + e);
-pararTudoCamera();
-});
-}
-}
-
-function pararTudoCamera() {
-if (photoStream) {
-photoStream.getTracks().forEach(track => track.stop());
-photoStream = null;
-}
-if (html5QrCode && html5QrCode.isScanning) {
-html5QrCode.stop().then(() => {
-document.getElementById('reader-container').style.display = 'none';
-}).catch(err => console.error(err));
-} else {
-document.getElementById('reader-container').style.display = 'none';
-}
-document.getElementById('photo-preview-container').style.display = 'none';
-document.getElementById('btn-parar-ao-vivo').style.display = 'none';
-}
-
-// --- CARRINHO E FINALIZAÇÃO DE COMPRA COM SALDOS E SUPERMERCADO ---
-function addProdutoCarrinho() {
-const nome = document.getElementById('prod-nome').value.trim();
-const qtd = parseFloat(document.getElementById('prod-qtd').value) || 1;
-const preco = parseFloat(document.getElementById('prod-preco').value) || 0;
-
-if (!nome) { alert('Informe a especificação/nome do produto!'); return; }
-
-carrinho.push({ id: Date.now(), nome: nome.toUpperCase(), qtd, preco });
-localStorage.setItem('cc_carrinho', JSON.stringify(carrinho));
-
-document.getElementById('prod-nome').value = '';
-document.getElementById('prod-preco').value = '';
-document.getElementById('prod-qtd').value = '1';
-
-renderCarrinho();
-}
-
-function removerItemCarrinho(id) {
-carrinho = carrinho.filter(item => item.id !== id);
-localStorage.setItem('cc_carrinho', JSON.stringify(carrinho));
-renderCarrinho();
-}
-
-function limparCarrinho() {
-if (confirm("Deseja realmente limpar todo o carrinho?")) {
-carrinho = [];
-localStorage.removeItem('cc_carrinho');
-renderCarrinho();
-}
-}
-
-function finalizarEGravarCompra() {
-if (carrinho.length === 0) {
-alert("O carrinho está vazio!");
-return;
-}
-
-const supermercado = document.getElementById('supermercado-nome').value.trim() || "Supermercado Não Especificado";
-const formaPag = document.getElementById('forma-pagamento').value;
-let totalCompra = carrinho.reduce((acc, item) => acc + (item.qtd * item.preco), 0);
-
-// Desconta do saldo correspondente
-if (formaPag === 'alimentacao') {
-if (saldos.alimentacao < totalCompra) {
-alert("⚠️ Atenção: O saldo do Vale Alimentação é menor que o valor total da compra, mas a compra será registrada.");
-}
-saldos.alimentacao -= totalCompra;
-} else if (formaPag === 'refeicao') {
-if (saldos.refeicao < totalCompra) {
-alert("⚠️ Atenção: O saldo do Vale Refeição é menor que o valor total da compra, mas a compra será registrada.");
-}
-saldos.refeicao -= totalCompra;
-}
-
-localStorage.setItem('cc_saldos', JSON.stringify(saldos));
-renderSaldos();
-
-const novaCompra = {
-id: Date.now(),
-data: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
-supermercado: supermercado,
-pagamento: formaPag === 'alimentacao' ? 'Vale Alimentação' : (formaPag === 'refeicao' ? 'Vale Refeição' : 'Dinheiro / Outros'),
-itens: [...carrinho],
-total: totalCompra
-};
-
-historicoCompras.unshift(novaCompra);
-localStorage.setItem('cc_historico', JSON.stringify(historicoCompras));
-renderHistorico();
-
-alert(✅ Compra finalizada no [${supermercado}] e salva com sucesso! Saldo atualizado.`);
-carrinho = [];
-document.getElementById('supermercado-nome').value = '';
-localStorage.removeItem('cc_carrinho');
-renderCarrinho();
-}
-
-function renderCarrinho() {
-const container = document.getElementById('carrinho-list');
-const totalEl = document.getElementById('carrinho-total');
-
-if (carrinho.length === 0) {
-container.innerHTML = '<p style="color:#888; font-size:0.85rem;">Nenhum item adicionado ao carrinho.</p>';
-totalEl.innerText = 'Total: R$` 0,00';
-return;
-}
-
-let total = 0;
-container.innerHTML = carrinho.map(item => {
-const subtotal = item.qtd * item.preco;
-total += subtotal;
-return &lt;div class="item-row"&gt; &lt;div&gt; &lt;strong&gt;${item.nome}</strong><br>
-<small style="color:var(--text-sub);">{item.id})">❌</button>
-</div>
-</div>
-`;
-}).join('');
-
-totalEl.innerText = Total: R$${total.toFixed(2)};
-}
-
-// --- LISTA PLANEJADA ---
-function adicionarItemLista() {
-const nome = document.getElementById('item-lista-nome').value.trim();
-if (!nome) return;
-listaPlanejada.push({ id: Date.now(), nome, comprado: false });
-localStorage.setItem('cc_lista', JSON.stringify(listaPlanejada));
-document.getElementById('item-lista-nome').value = '';
-renderListaPlanejada();
-}
-
-function toggleItemLista(id) {
-listaPlanejada = listaPlanejada.map(i => i.id === id ? { ...i, comprado: !i.comprado } : i);
-localStorage.setItem('cc_lista', JSON.stringify(listaPlanejada));
-renderListaPlanejada();
-}
-
-function removerItemLista(id) {
-listaPlanejada = listaPlanejada.filter(i => i.id !== id);
-localStorage.setItem('cc_lista', JSON.stringify(listaPlanejada));
-renderListaPlanejada();
-}
-
-function limparListaPlanejada() {
-if (confirm("Limpar toda a lista planejada?")) {
-listaPlanejada = [];
-localStorage.removeItem('cc_lista');
-renderListaPlanejada();
-}
-}
-
-function renderListaPlanejada() {
-const container = document.getElementById('lista-planejada-container');
-if (listaPlanejada.length === 0) {
-container.innerHTML = '<p style="color:#888; font-size:0.85rem;">Sua lista está vazia.</p>';
-return;
-}
-container.innerHTML = listaPlanejada.map(i => &lt;div class="item-row"&gt; &lt;span style="${i.comprado ? 'text-decoration: line-through; color: #888;' : ''}" onclick="toggleItemLista(${i.id})"&gt; ${i.comprado ? '✅' : '📌'} ${i.nome} &lt;/span&gt; &lt;button class="action-btn" onclick="removerItemLista(${i.id})">❌</button>
-</div>
-`).join('');
-}
-
-// --- CONTROLE DE VALIDADE ---
-function cadastrarValidade() {
-const nome = document.getElementById('val-prod-nome').value.trim();
-const dataVal = document.getElementById('val-prod-data').value;
-if (!nome || !dataVal) { alert("Preencha o nome do produto e a data de validade!"); return; }
-
-validades.push({ id: Date.now(), nome, data: dataVal });
-localStorage.setItem('cc_validades', JSON.stringify(validades));
-document.getElementById('val-prod-nome').value = '';
-document.getElementById('val-prod-data').value = '';
-renderValidades();
-}
-
-function removerValidade(id) {
-validades = validades.filter(v => v.id !== id);
-localStorage.setItem('cc_validades', JSON.stringify(validades));
-renderValidades();
-}
-
-function renderValidades() {
-const container = document.getElementById('validades-container');
-if (validades.length === 0) {
-container.innerHTML = '<p style="color:#888; font-size:0.85rem;">Nenhum produto em controle de validade.</p>';
-return;
-}
-
-const hoje = new Date();
-hoje.setHours(0,0,0,0);
-
-container.innerHTML = validades.map(v => {
-const part = v.data.split('-');
-const dtVal = new Date(part[0], part[1]-1, part[2]);
-const diffDias = Math.ceil((dtVal - hoje) / (1000 * 60 * 60 * 24));
-
-let badge = '<span class="badge badge-success">OK</span>';
-if (diffDias < 0) {
-badge = '<span class="badge badge-danger">VENCIDO</span>';
-} else if (diffDias <= 7) {
-badge = '<span class="badge badge-warning">VENCE EM BREVE</span>';
-}
-
-return &lt;div class="item-row"&gt; &lt;div&gt; &lt;strong&gt;${v.nome}</strong> {part[2]}/{part[0]} ({v.id})">❌</button>
-</div>
-`;
-}).join('');
-}
-
-// --- CUPOM FISCAL + LEITURA OCR ---
-async function abrirCapturaCupomTraseira() {
-const statusEl = document.getElementById('ocr-status');
-statusEl.innerText = "Abra a câmera e tire a foto nítida do cupom...";
-
-let cupomStream = null;
-try {
-cupomStream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: { exact: "environment" } }
-});
-} catch (e) {
-try {
-cupomStream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: "environment" }
-});
-} catch (err) {
-alert("Não foi possível acessar a câmera traseira: " + err);
-return;
-}
-}
-
-const videoTemp = document.createElement('video');
-videoTemp.srcObject = cupomStream;
-await videoTemp.play();
-
-setTimeout(() => {
-const canvas = document.createElement('canvas');
-canvas.width = videoTemp.videoWidth || 1280;
-canvas.height = videoTemp.videoHeight || 720;
-const ctx = canvas.getContext('2d');
-ctx.drawImage(videoTemp, 0, 0, canvas.width, canvas.height);
-
-cupomStream.getTracks().forEach(track => track.stop());
-
-const imgSrc = canvas.toDataURL('image/jpeg');
-cupons.push({ id: Date.now(), data: new Date().toLocaleDateString('pt-BR'), img: imgSrc });
-localStorage.setItem('cc_cupons', JSON.stringify(cupons));
-renderCupons();
-
-statusEl.innerText = "⏳ Realizando leitura OCR avançada (quantidades e preços)...";
-
-Tesseract.recognize(imgSrc, 'por', { logger: m => console.log(m) })
-.then(({ data: { text } }) => {
-statusEl.innerText = "✅ Leitura do cupom concluída com sucesso!";
-processarTextoCupom(text);
-})
-.catch(err => {
-console.error(err);
-statusEl.innerText = "⚠️ Foto salva! Certifique-se de fotografar com boa iluminação para OCR perfeito.";
-});
-}, 1000);
-}
-
-function processarTextoCupom(texto) {
-const linhas = texto.split('\n');
-itensCupomLidos = [];
-
-linhas.forEach(linha => {
-const l = linha.toUpperCase().trim();
-const matches = l.match(/(\d+[.,]\d{2})/g);
-const matchQtdStr = l.match(/(\d+)\s*[xX]\s*(\d+[.,]\d{2})/);
-
-if (matches && matches.length > 0) {
-const precoFinal = parseFloat(matches[matches.length - 1].replace(',', '.'));
-let qtd = 1;
-if (matchQtdStr) {
-qtd = parseInt(matchQtdStr[1]);
-}
-
-const nomeStr = l.replace(/(\d+[.,]\d{2})/g, '').replace(/(\d+)\s*[xX]/, '').replace(/[^A-Z\s]/g, '').trim();
-
-if (nomeStr.length > 2) {
-itensCupomLidos.push({
-nome: nomeStr,
-qtd: qtd,
-preco: precoFinal
-});
-}
-}
-});
-
-localStorage.setItem('cc_cupom_ocr', JSON.stringify(itensCupomLidos));
-}
-
-function removerCupom(id) {
-cupons = cupons.filter(c => c.id !== id);
-localStorage.setItem('cc_cupons', JSON.stringify(cupons));
-renderCupons();
-}
-
-function renderCupons() {
-const container = document.getElementById('cupons-container');
-if (cupons.length === 0) {
-container.innerHTML = '<p style="color:#888; font-size:0.85rem;">Nenhum cupom gravado.</p>';
-return;
-}
-container.innerHTML = cupons.map(c => &lt;div class="item-row" style="flex-direction:column; align-items:flex-start; gap:8px;"&gt; &lt;div style="display:flex; justify-content:space-between; width:100%;"&gt; &lt;strong&gt;🧾 Cupom de ${c.data}</strong>
-<button class="action-btn" onclick="removerCupom(${c.id})"&gt;❌&lt;/button&gt; &lt;/div&gt; &lt;img src="${c.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:4px;">
-</div>
-`).join('');
-}
-
-// --- CONFERÊNCIA DE DIVERGÊNCIAS ---
-function conferirDivergencias() {
-const resultado = document.getElementById('divergencias-resultado');
-let itensParaConferir = carrinho;
-if (carrinho.length === 0 && historicoCompras.length > 0) {
-itensParaConferir = historicoCompras[0].itens;
-}
-
-if (itensParaConferir.length === 0) {
-resultado.innerHTML = '<p style="color:#ffab00; font-size:0.85rem;">Adicione itens ao carrinho ou finalize uma compra para conferir.</p>';
-return;
-}
-
-let html = '<div style="display:flex; flex-direction:column; gap:10px;">';
-
-itensParaConferir.forEach(itemCar => {
-const itemCupom = itensCupomLidos.find(ic =>
-ic.nome.includes(itemCar.nome) || itemCar.nome.includes(ic.nome)
-);
-
-if (itemCupom) {
-const diffPreco = itemCupom.preco - itemCar.preco;
-const diffQtd = itemCupom.qtd - itemCar.qtd;
-
-let statusBadge = '<span class="badge badge-success">✓ OK</span>';
-let detalhes = '';
-let temErro = false;
-
-if (diffQtd !== 0) {
-temErro = true;
-statusBadge = '<span class="badge badge-danger">⚠️ ERRO DE QUANTIDADE</span>';
-detalhes += <br&gt;&lt;span style="color:var(--danger);"&gt;Quantidade Divergente! Carrinho: &lt;strong&gt;${itemCar.qtd}</strong> | Cupom Fiscal: <strong>${itemCupom.qtd}&lt;/strong&gt;&lt;/span>;
-}
-
-if (Math.abs(diffPreco) > 0.05) {
-temErro = true;
-if (diffPreco > 0) {
-statusBadge = '<span class="badge badge-danger">⚠️ COBRADO A MAIS</span>';
-detalhes += <br&gt;&lt;span style="color:var(--danger);"&gt;Preço Gôndola: R$ latex
-{diffPreco.toFixed(2)})&lt;/span>`; } else { statusBadge = '&lt;span class="badge badge-warning"&gt;🏷️ DESCONTO / OFERTA&lt;/span&gt;'; detalhes += `<br&gt;&lt;span style="color:var(--accent);"&gt;Preço Gôndola: R
-
- ${Math.abs(diffPreco).toFixed(2)})&lt;/span>;
-}
-}
-
-if (!temErro) {
-detalhes = <br&gt;&lt;span style="color:var(--text-sub);"&gt;Qtd:${itemCar.qtd}x | Valor Unitário: R{itemCar.preco.toFixed(2)} conferem com o cupom.</span>`;
-}
-
-html += &lt;div style="padding:10px; background:#2a2a2a; border-radius:6px; border-left:4px solid ${temErro ? 'var(--danger)' : 'var(--primary)'};">
-<strong>${itemCar.nome}&lt;/strong&gt; ${statusBadge}
-${detalhes} &lt;/div&gt;;
-} else {
-html += &lt;div style="padding:10px; background:#2a2a2a; border-radius:6px; border-left:4px solid var(--accent);"&gt; &lt;strong&gt;${itemCar.nome}</strong> <span class="badge badge-warning">NÃO LOCALIZADO NO CUPOM</span><br>
-<small style="color:var(--text-sub);">${itemCar.qtd}x R$${itemCar.preco.toFixed(2)}&lt;/small&gt; &lt;/div&gt;;
-}
-});
-
-html += '</div>';
-resultado.innerHTML = html;
-}
-
-// --- COMPARADOR DE PREÇOS ENTRE SUPERMERCADOS ---
-function gerarComparativoPrecos() {
-const resultado = document.getElementById('comparativo-resultado');
-if (historicoCompras.length === 0) {
-resultado.innerHTML = '<p style="color:#ffab00; font-size:0.85rem;">Nenhum histórico de compras disponível para comparar.</p>';
-return;
-}
-
-// Mapeia os produtos e os preços por supermercado
-let mapaProdutos = {};
-
-historicoCompras.forEach(compra => {
-const mercado = compra.supermercado;
-compra.itens.forEach(item => {
-if (!mapaProdutos[item.nome]) {
-mapaProdutos[item.nome] = {};
-}
-// Guarda o menor preço encontrado para este produto no mercado
-if (!mapaProdutos[item.nome][mercado] || item.preco < mapaProdutos[item.nome][mercado]) {
-mapaProdutos[item.nome][mercado] = item.preco;
-}
-});
-});
-
-let html = '<div style="display:flex; flex-direction:column; gap:12px;">';
-let temProdutosComparaveis = false;
-
-for (let prod in mapaProdutos) {
-let mercadosDoProduto = mapaProdutos[prod];
-let listaMercados = Object.keys(mercadosDoProduto);
-
-if (listaMercados.length > 1) {
-temProdutosComparaveis = true;
-// Encontra o mais barato
-let mercadoMaisBarato = listaMercados[0];
-let menorPreco = mercadosDoProduto[mercadoMaisBarato];
-
-listaMercados.forEach(m => {
-if (mercadosDoProduto[m] < menorPreco) {
-menorPreco = mercadosDoProduto[m];
-mercadoMaisBarato = m;
-}
-});
-
-let detalhesPrecos = listaMercados.map(m => ${m}: R$ ${mercadosDoProduto[m].toFixed(2)}`).join(' | ');
-
-html += &lt;div style="padding:12px; background:#2a2a2a; border-radius:6px; border-left:4px solid var(--primary);"&gt; &lt;strong&gt;🛒${prod}</strong><br>
-<span style="color:var(--primary); font-size:0.9rem;">⭐ Mais barato em: <strong>{detalhesPrecos}</small>
-</div>
-`;
-}
-}
-
-if (!temProdutosComparaveis) {
-resultado.innerHTML = '<p style="color:#ffab00; font-size:0.85rem;">Você ainda não comprou os mesmos produtos em supermercados diferentes para gerar o comparativo. Continue registrando suas compras!</p>';
-return;
-}
-
-html += '</div>';
-resultado.innerHTML = html;
-}
-
-// --- HISTÓRICO DE COMPRAS ---
-function renderHistorico() {
-const container = document.getElementById('historico-container');
-if (historicoCompras.length === 0) {
-container.innerHTML = '<p style="color:#888; font-size:0.85rem;">Nenhum histórico de compra gravado.</p>';
-return;
-}
-
-container.innerHTML = historicoCompras.map(compra => &lt;div style="padding:12px; background:#2a2a2a; border-radius:6px; margin-bottom:10px; border-left:4px solid #2b7de9;"&gt; &lt;div style="display:flex; justify-content:space-between; margin-bottom:4px;"&gt; &lt;strong&gt;📅 ${compra.data}</strong>
-<span style="color:var(--primary); font-weight:bold;">R$ ${compra.total.toFixed(2)}</span>
-</div>
-<div style="font-size:0.82rem; color:var(--accent); margin-bottom:6px;">
-🏪 ${compra.supermercado} — 💳 Pago com: ${compra.pagamento}
-</div>
-<ul style="margin:0; padding-left:15px; font-size:0.85rem; color:var(--text-sub);">
-${compra.itens.map(i =&gt;<li>{i.nome} — R{i.preco.toFixed(2)} (Sub: R{(i.qtd*i.preco).toFixed(2)})</li>).join('')} &lt;/ul&gt; &lt;/div&gt;).join('');
-}
-
-function limparHistorico() {
-if (confirm("Deseja apagar todo o histórico de compras?")) {
-historicoCompras = [];
-localStorage.removeItem('cc_historico');
-renderHistorico();
-}
-}
-</script>
+    <header>🛒 Compra Certa</header>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('compra', this)">Compra</button>
+        <button class="nav-tab" onclick="switchTab('beneficios', this)">💳 Benefícios</button>
+        <button class="nav-tab" onclick="switchTab('lista', this)">📋 Lista</button>
+        <button class="nav-tab" onclick="switchTab('validade', this)">📅 Validade</button>
+        <button class="nav-tab" onclick="switchTab('cupom', this)">📷 Cupom</button>
+        <button class="nav-tab" onclick="switchTab('precos', this)">📊 Preços</button>
+    </div>
+
+    <div class="container">
+
+        <!-- ABA COMPRA -->
+        <div id="compra" class="tab-content active">
+            <div class="card">
+                <h3>📷 Leitura de Código de Barras</h3>
+                <div id="reader"></div>
+                <button onclick="startScanner()" class="secondary">Abrir Câmera Traseira ao Vivo</button>
+            </div>
+
+            <div class="card">
+                <h3>📝 Registrar Item no Carrinho</h3>
+                <label>Supermercado:</label>
+                <select id="supermercadoInput">
+                    <option value="Supermercado A">Supermercado A</option>
+                    <option value="Supermercado B">Supermercado B</option>
+                    <option value="Supermercado C">Supermercado C</option>
+                </select>
+
+                <label>Produto / Especificação:</label>
+                <input type="text" id="produtoInput" placeholder="Ex: Leite Integral 1L">
+                
+                <div class="flex-row">
+                    <div>
+                        <label>Qtd:</label>
+                        <input type="number" id="qtdInput" value="1" min="1">
+                    </div>
+                    <div>
+                        <label>Preço Unitário (R$):</label>
+                        <input type="number" step="0.01" id="precoInput" placeholder="0.00">
+                    </div>
+                </div>
+
+                <button onclick="adicionarItem()">+ Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="card">
+                <h3>🛒 Itens no Carrinho</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Qtd</th><th>Total</th><th>Ação</th></tr>
+                    </thead>
+                    <tbody id="tabelaCarrinho"></tbody>
+                </table>
+                <h3 style="margin-top: 15px; text-align: right;" id="totalCarrinhoTxt">Total: R$ 0,00</h3>
+                <button onclick="limparCarrinho()" class="danger">Limpar Carrinho</button>
+            </div>
+        </div>
+
+        <!-- ABA BENEFÍCIOS -->
+        <div id="beneficios" class="tab-content">
+            <div class="card">
+                <h3>💳 Gestão de Saldo de Cartões</h3>
+                <label>Tipo de Cartão:</label>
+                <select id="tipoBeneficio">
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Refeição">Refeição</option>
+                </select>
+
+                <label>Valor Atual do Saldo (R$):</label>
+                <input type="number" step="0.01" id="saldoBeneficioInput" placeholder="0.00">
+                <button onclick="salvarSaldoBeneficio()">Atualizar Saldo</button>
+            </div>
+            <div class="card">
+                <h3>💰 Saldos Registrados</h3>
+                <p><strong>Alimentação:</strong> <span id="displayAlimentacao">R$ 0,00</span></p>
+                <p style="margin-top: 8px;"><strong>Refeição:</strong> <span id="displayRefeicao">R$ 0,00</span></p>
+            </div>
+        </div>
+
+        <!-- ABA LISTA -->
+        <div id="lista" class="tab-content">
+            <div class="card">
+                <h3>📋 Planejamento de Compras</h3>
+                <input type="text" id="novoItemLista" placeholder="Item planejado...">
+                <button onclick="adicionarNaLista()">Adicionar à Lista</button>
+                <ul id="ulListaPlanejada" style="list-style: none; margin-top: 10px;"></ul>
+            </div>
+        </div>
+
+        <!-- ABA VALIDADE -->
+        <div id="validade" class="tab-content">
+            <div class="card">
+                <h3>📅 Controle de Validade</h3>
+                <input type="text" id="produtoValidade" placeholder="Nome do Produto">
+                <label>Data de Validade:</label>
+                <input type="date" id="dataValidadeInput">
+                <button onclick="adicionarValidade()">Salvar Validade</button>
+                <table style="margin-top: 15px;">
+                    <thead><tr><th>Produto</th><th>Vencimento</th></tr></thead>
+                    <tbody id="tabelaValidade"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA CUPOM -->
+        <div id="cupom" class="tab-content">
+            <div class="card">
+                <h3>📷 OCR de Cupom Fiscal</h3>
+                <input type="file" accept="image/*" id="inputCupomFoto" onchange="lerCupom(event)">
+                <p id="statusOCR" style="margin-top: 10px; color: var(--text-muted);">Envie uma foto clara do cupom fiscal para extrair os textos.</p>
+                <textarea id="resultadoOCR" style="width:100%; height:120px; margin-top:10px; background:#111; color:#0f0; padding:8px; border-radius:4px; font-family:monospace;" placeholder="Texto lido aparecerá aqui..."></textarea>
+            </div>
+        </div>
+
+        <!-- ABA PREÇOS (COMPARADOR) -->
+        <div id="precos" class="tab-content">
+            <div class="card">
+                <h3>📊 Comparador de Preços por Supermercado</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">O app compara automaticamente onde os produtos saem mais barato com base no histórico de compras.</p>
+                <div id="comparadorContainer"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Sistema de Abas
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            if(tabId === 'precos') carregarComparador();
+        }
+
+        // Dados Locais (LocalStorage)
+        let carrinho = JSON.parse(localStorage.getItem('cc_carrinho')) || [];
+        let listaPlanejada = JSON.parse(localStorage.getItem('cc_lista')) || [];
+        let validades = JSON.parse(localStorage.getItem('cc_validades')) || [];
+        let beneficios = JSON.parse(localStorage.getItem('cc_beneficios')) || { Alimentacao: 0, Refeicao: 0 };
+
+        function salvarDados() {
+            localStorage.setItem('cc_carrinho', JSON.stringify(carrinho));
+            localStorage.setItem('cc_lista', JSON.stringify(listaPlanejada));
+            localStorage.setItem('cc_validades', JSON.stringify(validades));
+            localStorage.setItem('cc_beneficios', JSON.stringify(beneficios));
+        }
+
+        // Carrinho & Comparador de Preços
+        function adicionarItem() {
+            let mercado = document.getElementById('supermercadoInput').value;
+            let produto = document.getElementById('produtoInput').value.trim();
+            let qtd = parseInt(document.getElementById('qtdInput').value) || 1;
+            let preco = parseFloat(document.getElementById('precoInput').value) || 0;
+
+            if(!produto || preco <= 0) {
+                alert('Preencha o nome do produto e um preço válido.');
+                return;
+            }
+
+            carrinho.push({ mercado, produto, qtd, preco });
+            salvarDados();
+            renderCarrinho();
+
+            document.getElementById('produtoInput').value = '';
+            document.getElementById('precoInput').value = '';
+            document.getElementById('qtdInput').value = '1';
+        }
+
+        function renderCarrinho() {
+            let tbody = document.getElementById('tabelaCarrinho');
+            tbody.innerHTML = '';
+            let totalGeral = 0;
+
+            carrinho.forEach((item, index) => {
+                let totalItem = item.qtd * item.preco;
+                totalGeral += totalItem;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.produto}</strong><br><small style="color:var(--text-muted)">${item.mercado}</small></td>
+                        <td>${item.qtd}</td>
+                        <td>R$ ${totalItem.toFixed(2)}</td>
+                        <td><button onclick="removerItem(${index})" class="danger" style="padding:4px 8px; font-size:0.8rem;">X</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('totalCarrinhoTxt').innerText = `Total: R$ ${totalGeral.toFixed(2)}`;
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            salvarDados();
+            renderCarrinho();
+        }
+
+        function limparCarrinho() {
+            if(confirm('Deseja limpar todo o carrinho?')) {
+                carrinho = [];
+                salvarDados();
+                renderCarrinho();
+            }
+        }
+
+        // Benefícios
+        function salvarSaldoBeneficio() {
+            let tipo = document.getElementById('tipoBeneficio').value;
+            let valor = parseFloat(document.getElementById('saldoBeneficioInput').value) || 0;
+            if(tipo === 'Alimentação') beneficios.Alimentacao = valor;
+            else beneficios.Refeicao = valor;
+            salvarDados();
+            atualizarDisplayBeneficios();
+            alert('Saldo atualizado com sucesso!');
+        }
+
+        function atualizarDisplayBeneficios() {
+            document.getElementById('displayAlimentacao').innerText = `R$ ${(beneficios.Alimentacao || 0).toFixed(2)}`;
+            document.getElementById('displayRefeicao').innerText = `R$ ${(beneficios.Refeicao || 0).toFixed(2)}`;
+        }
+
+        // Lista Planejada
+        function adicionarNaLista() {
+            let item = document.getElementById('novoItemLista').value.trim();
+            if(!item) return;
+            listaPlanejada.push(item);
+            salvarDados();
+            renderLista();
+            document.getElementById('novoItemLista').value = '';
+        }
+
+        function renderLista() {
+            let ul = document.getElementById('ulListaPlanejada');
+            ul.innerHTML = '';
+            listaPlanejada.forEach((item, index) => {
+                ul.innerHTML += `<li style="padding:6px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                    <span>${item}</span>
+                    <button onclick="removerLista(${index})" class="danger" style="width:auto; padding:2px 8px; font-size:0.7rem;">Remover</button>
+                </li>`;
+            });
+        }
+
+        function removerLista(index) {
+            listaPlanejada.splice(index, 1);
+            salvarDados();
+            renderLista();
+        }
+
+        // Validade
+        function adicionarValidade() {
+            let produto = document.getElementById('produtoValidade').value.trim();
+            let data = document.getElementById('dataValidadeInput').value;
+            if(!produto || !data) return;
+            validades.push({ produto, data });
+            salvarDados();
+            renderValidade();
+            document.getElementById('produtoValidade').value = '';
+            document.getElementById('dataValidadeInput').value = '';
+        }
+
+        function renderValidade() {
+            let tbody = document.getElementById('tabelaValidade');
+            tbody.innerHTML = '';
+            validades.forEach(v => {
+                tbody.innerHTML += `<tr><td>${v.produto}</td><td>${v.data.split('-').reverse().join('/')}</td></tr>`;
+            });
+        }
+
+        // OCR Tesseract
+        function lerCupom(event) {
+            let file = event.target.files[0];
+            if(!file) return;
+            let status = document.getElementById('statusOCR');
+            let resultado = document.getElementById('resultadoOCR');
+            status.innerText = "Lendo cupom fiscal via Inteligência Artificial (OCR)... Aguarde.";
+            
+            Tesseract.recognize(file, 'por', {
+                logger: m => { if(m.status === 'recognizing text') status.innerText = `Processando: ${Math.round(m.progress * 100)}%`; }
+            }).then(({ data: { text } }) => {
+                status.innerText = "Leitura concluída com sucesso!";
+                resultado.value = text;
+            }).catch(err => {
+                status.innerText = "Erro ao ler o cupom.";
+                resultado.value = err;
+            });
+        }
+
+        // Leitor de Código de Barras (Html5Qrcode)
+        let html5QrCode;
+        function startScanner() {
+            let readerDiv = document.getElementById('reader');
+            readerDiv.style.display = 'block';
+            if(!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+            
+            html5QrCode.start(
+                { facingMode: { exact: "environment" } },
+                { fps: 10, qrbox: { width: 250, height: 100 } },
+                (decodedText) => {
+                    document.getElementById('produtoInput').value = `Código: ${decodedText}`;
+                    html5QrCode.stop();
+                    readerDiv.style.display = 'none';
+                },
+                (errorMessage) => {}
+            ).catch(err => {
+                // Fallback se a câmara exata falhar
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 250, height: 100 } },
+                    (decodedText) => {
+                        document.getElementById('produtoInput').value = `Código: ${decodedText}`;
+                        html5QrCode.stop();
+                        readerDiv.style.display = 'none';
+                    },
+                    (err) => {}
+                );
+            });
+        }
+
+        // Comparador de Preços Inteligente
+        function carregarComparador() {
+            let container = document.getElementById('comparadorContainer');
+            if(carrinho.length === 0) {
+                container.innerHTML = `<p style="color:var(--text-muted)">Adicione itens no carrinho para gerar a comparação entre mercados.</p>`;
+                return;
+            }
+
+            let precosPorProduto = {};
+            carrinho.forEach(item => {
+                let prod = item.produto.toLowerCase();
+                if(!precosPorProduto[prod]) precosPorProduto[prod] = {};
+                precosPorProduto[prod][item.mercado] = item.preco;
+            });
+
+            let html = `<table><thead><tr><th>Produto</th><th>Melhor Preço / Mercado</th></tr></thead><tbody>`;
+            for(let prod in precosPorProduto) {
+                let mercados = precosPorProduto[prod];
+                let melhorMercado = Object.keys(mercados).reduce((a, b) => mercados[a] < mercados[b] ? a : b);
+                html += `<tr><td><strong>${prod}</strong></td><td>R$ ${mercados[melhorMercado].toFixed(2)} (${melhorMercado})</td></tr>`;
+            }
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        // Inicializar dados na tela ao carregar
+        renderCarrinho();
+        renderLista();
+        renderValidade();
+        atualizarDisplayBeneficios();
+    </script>
 </body>
 </html>

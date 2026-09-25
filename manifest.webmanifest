@@ -1,7 +1,7 @@
 {
   "name": "Compra Certa",
-  "short_name": "CompraCerta",
-  "start_url": "./index.html",
+  "short_name": "Compra Certa",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#006644",
@@ -9,8 +9,7 @@
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3081/3081986.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }

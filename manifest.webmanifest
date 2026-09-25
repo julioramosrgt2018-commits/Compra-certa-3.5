@@ -1,1 +1,16 @@
-{"name":"Compra Certa","short_name":"Compra Certa","start_url":"./","display":"standalone","background_color":"#f4f7f5","theme_color":"#087443","lang":"pt-BR","description":"Conferência de preços, validade e cupom fiscal."}
+{
+  "name": "Compra Certa",
+  "short_name": "CompraCerta",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#006644",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3081/3081986.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
